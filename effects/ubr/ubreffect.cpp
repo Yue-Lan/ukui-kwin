@@ -47,7 +47,7 @@ static ToplevelSetDepth setDepthfunc = nullptr;
 UBREffect::UBREffect(QObject *parent, const QVariantList &args)
 {
     // try get Toplevel::setDepth(), for resolving ubr effect has black corners of opaque window.
-    setDepthfunc = (ToplevelSetDepth) QLibrary::resolve("kwin.so." + qApp->applicationVersion(), "_ZN4KWin8Toplevel8setDepthEi");
+    setDepthfunc = (ToplevelSetDepth) QLibrary::resolve("ukui-kwin.so." + qApp->applicationVersion(), "_ZN4KWin8Toplevel8setDepthEi");
     qDebug()<<"try get Toplevel::setDepth()"<<setDepthfunc;
 
     qDebug()<<parent<<args<<"ubr effect active";
