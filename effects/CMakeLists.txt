@@ -181,6 +181,7 @@ add_subdirectory(windowgeometry)
 add_subdirectory(zoom)
 
 # OpenGL-specific effects
+include(ubr/CMakeLists.txt)
 add_subdirectory(blur)
 include(backgroundcontrast/CMakeLists.txt)
 add_subdirectory(coverswitch)
