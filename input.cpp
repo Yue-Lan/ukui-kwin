@@ -1060,7 +1060,7 @@ public:
             return true;
         }
         case QEvent::MouseButtonPress: {
-            if (kwinApp()->shouldUseWaylandForCompositing() && workspace()->userActionsMenuNonConst()->isShown() && workspace()->userActionsMenuNonConst()->isMenusContain(event->globalPos())) {
+            if (kwinApp()->shouldUseWaylandForCompositing() && workspace()->userActionsMenuNonConst()->isShown() && !workspace()->userActionsMenuNonConst()->isMenusContain(event->globalPos())) {
                 workspace()->userActionsMenuNonConst()->close();
                 return false;
             }
@@ -1381,7 +1381,7 @@ public:
             break;
         }
         case QEvent::MouseButtonPress:
-            if (kwinApp()->shouldUseWaylandForCompositing() && workspace()->userActionsMenuNonConst()->isShown() && workspace()->userActionsMenuNonConst()->isMenusContain(event->globalPos())) {
+            if (kwinApp()->shouldUseWaylandForCompositing() && workspace()->userActionsMenuNonConst()->isShown() && !workspace()->userActionsMenuNonConst()->isMenusContain(event->globalPos())) {
                 workspace()->userActionsMenuNonConst()->close();
                 return false;
             }

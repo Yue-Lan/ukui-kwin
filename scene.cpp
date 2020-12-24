@@ -138,6 +138,8 @@ void Scene::paintScreen(int* mask, const QRegion &damage, const QRegion &repaint
         region = displayRegion;
     }
 
+    region = displayRegion;
+
     painted_region = region;
     repaint_region = repaint;
 
