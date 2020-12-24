@@ -48,6 +48,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "wayland_server.h"
 #include "xwl/xwayland_interface.h"
 #include "internal_client.h"
+#include "useractions.h"
 #include <KWayland/Server/display.h>
 #include <KWayland/Server/fakeinput_interface.h>
 #include <KWayland/Server/seat_interface.h>
@@ -1058,7 +1059,26 @@ public:
             decoration->client()->processDecorationMove(p.toPoint(), event->globalPos());
             return true;
         }
-        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonPress: {
+            if (kwinApp()->shouldUseWaylandForCompositing() && workspace()->userActionsMenuNonConst()->isShown() && workspace()->userActionsMenuNonConst()->isMenusContain(event->globalPos())) {
+                workspace()->userActionsMenuNonConst()->close();
+                return false;
+            }
+            const auto actionResult = performClientMouseAction(event, decoration->client());
+            if (actionResult.first) {
+                return actionResult.second;
+            }
+            QMouseEvent e(event->type(), p, event->globalPos(), event->button(), event->buttons(), event->modifiers());
+            e.setAccepted(false);
+            QCoreApplication::sendEvent(decoration->decoration(), &e);
+            if (!e.isAccepted() && event->type() == QEvent::MouseButtonPress) {
+                decoration->client()->processDecorationButtonPress(&e);
+            }
+            if (event->type() == QEvent::MouseButtonRelease) {
+                decoration->client()->processDecorationButtonRelease(&e);
+            }
+            return true;
+        }
         case QEvent::MouseButtonRelease: {
             const auto actionResult = performClientMouseAction(event, decoration->client());
             if (actionResult.first) {
@@ -1361,6 +1381,10 @@ public:
             break;
         }
         case QEvent::MouseButtonPress:
+            if (kwinApp()->shouldUseWaylandForCompositing() && workspace()->userActionsMenuNonConst()->isShown() && workspace()->userActionsMenuNonConst()->isMenusContain(event->globalPos())) {
+                workspace()->userActionsMenuNonConst()->close();
+                return false;
+            }
             seat->pointerButtonPressed(nativeButton);
             break;
         case QEvent::MouseButtonRelease:

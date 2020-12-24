@@ -106,6 +106,8 @@ public:
      */
     void show(const QRect &pos, AbstractClient *client);
 
+    bool isMenusContain(const QPoint &pos);
+
 public Q_SLOTS:
     /**
      * Delayed initialization of the activity menu.
@@ -206,6 +208,9 @@ private:
      * The actual main context menu which is show when the UserActionsMenu is invoked.
      */
     QMenu* m_menu;
+
+    QMenu* m_advancedMenu;
+
     /**
      * The move to desktop sub menu.
      */

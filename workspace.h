@@ -309,6 +309,10 @@ public:
         return m_userActionsMenu;
     }
 
+    UserActionsMenu *userActionsMenuNonConst() {
+        return m_userActionsMenu;
+    }
+
     void showApplicationMenu(const QRect &pos, AbstractClient *c, int actionId);
 
     void updateMinimizedOfTransients(AbstractClient*);

@@ -163,6 +163,25 @@ void UserActionsMenu::show(const QRect &pos, AbstractClient *client)
     }
 }
 
+bool UserActionsMenu::isMenusContain(const QPoint &pos)
+{
+    if (m_menu && m_menu->geometry().contains(pos))
+        return true;
+    if (m_advancedMenu && m_advancedMenu->geometry().contains(pos))
+        return true;
+    if (m_desktopMenu && m_desktopMenu->geometry().contains(pos))
+        return true;
+    if (m_multipleDesktopsMenu && m_multipleDesktopsMenu->geometry().contains(pos))
+        return true;
+    if (m_screenMenu && m_screenMenu->geometry().contains(pos))
+        return true;
+    if (m_activityMenu && m_activityMenu->geometry().contains(pos))
+        return true;
+    if (m_scriptsMenu && m_scriptsMenu->geometry().contains(pos))
+        return true;
+    return false;
+}
+
 void UserActionsMenu::grabInput()
 {
     m_menu->windowHandle()->setMouseGrabEnabled(true);
@@ -242,6 +261,7 @@ void UserActionsMenu::init()
     connect(m_menu, &QMenu::triggered, this, &UserActionsMenu::slotWindowOperation, Qt::QueuedConnection);
 
     QMenu *advancedMenu = new QMenu(m_menu);
+    m_advancedMenu = advancedMenu;
     connect(advancedMenu, &QMenu::aboutToShow, [this, advancedMenu]() {
         if (m_client) {
             advancedMenu->setPalette(m_client->palette());
@@ -370,6 +390,7 @@ void UserActionsMenu::discard()
 {
     delete m_menu;
     m_menu = nullptr;
+    m_advancedMenu = nullptr;
     m_desktopMenu = nullptr;
     m_multipleDesktopsMenu = nullptr;
     m_screenMenu = nullptr;
